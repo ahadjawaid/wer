@@ -18,7 +18,7 @@ class WER:
 
         return measures["wer"], measures["cer"], 
         
-    def calculate(self, wav_path: str, text: str) -> float:
+    def calculate(self, wav_path: str, text: str) -> dict:
         wav, sr = librosa.load(wav_path)
 
         resampled_audio_data = librosa.resample(wav, orig_sr=sr, target_sr=self.target_sr)
@@ -39,7 +39,7 @@ class WER:
         return transcription
     
 
-def calculate_measures(groundtruth, transcription):
+def calculate_measures(groundtruth: str, transcription: str) -> dict:
     groundtruth = normalize_sentence(groundtruth)
     transcription = normalize_sentence(transcription)
     
@@ -50,7 +50,7 @@ def calculate_measures(groundtruth, transcription):
 
     return measures
 
-def normalize_sentence(sentence):
+def normalize_sentence(sentence: str) -> str:
     sentence = sentence.upper()
     sentence = jiwer.RemovePunctuation()(sentence)
     sentence = jiwer.RemoveWhiteSpace(replace_by_space=True)(sentence)
